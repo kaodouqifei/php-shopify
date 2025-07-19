@@ -52,6 +52,8 @@ class HttpRequestGraphQL extends HttpRequestJson
         } else {
             self::$postDataGraphQL = json_encode(['query' => $data]);
         }
+
+        self::$httpHeaders['Content-Length'] = strlen(self::$postDataGraphQL);
     }
 
     /**
