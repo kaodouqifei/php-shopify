@@ -136,11 +136,13 @@ abstract class ShopifyResource
      */
     private $prevLink = null;
 
-    public function __construct($id = null, $parentResourceUrl = '')
+    public function __construct($id = null, $parentResourceUrl = '', $config = null)
     {
         $this->id = $id;
 
-        $config = ShopifySDK::$config;
+        if(!$config){
+            $config = ShopifySDK::$config;
+        }
 
         $this->resourceUrl = ($parentResourceUrl ? $parentResourceUrl . '/' :  $config['ApiUrl']) . $this->getResourcePath() . ($this->id ? '/' . $this->id : '');
 
