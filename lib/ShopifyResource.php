@@ -112,6 +112,7 @@ abstract class ShopifyResource
      * @var integer
      */
     public $id;
+    public $config;
 
     /**
      * Create a new Shopify API resource instance.
@@ -140,9 +141,7 @@ abstract class ShopifyResource
     {
         $this->id = $id;
 
-        if(!$config){
-            $config = ShopifySDK::$config;
-        }
+        $this->config = $config;
 
         $this->resourceUrl = ($parentResourceUrl ? $parentResourceUrl . '/' :  $config['ApiUrl']) . $this->getResourcePath() . ($this->id ? '/' . $this->id : '');
 
@@ -212,7 +211,7 @@ abstract class ShopifyResource
             $resourceID = !empty($arguments) ? $arguments[0] : null;
 
 
-            $api = new $childClass($resourceID, $this->resourceUrl);
+            $api = new $childClass($resourceID, $this->resourceUrl, $this->config);
 
             return $api;
         } else {
@@ -538,7 +537,7 @@ abstract class ShopifyResource
             if($message=='account already enabled'){
                 return array('account_activation_url'=>false);
             }
-            
+
             throw new ApiException($message, CurlRequest::$lastHttpCode);
         }
 
